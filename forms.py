@@ -14,3 +14,7 @@ class UserForm(FlaskForm):
         validators.Email(message='Ingrese un correo válido')
     ])
     telefono = StringField('Teléfono')
+    matricula = IntegerField('Matricula') 
+    especialidad = StringField('Especialidad', [
+        validators.DataRequired(message='La especialidad es requerida')
+    ])
