@@ -14,22 +14,27 @@ def perfil(nombre):
 def listamaestros():
     create_form = forms.UserForm(request.form)
     maestros = Maestros.query.all()
-    return render_template("maestros/listadoMest.html", form=create_form, maestros=maestros)
+    return render_template("maestros/maestros_lista.html", form=create_form, maestros=maestros)
 
 @maestros.route("/maestros/agregar", methods=['GET', 'POST'])
 def maestrosagregar():
     create_form = forms.UserForm(request.form)
-    if request.method == 'POST' and create_form.validate():
-        alum = Maestros(
-            nombre=create_form.nombre.data,
-            apellidos=create_form.apellidos.data,
-            especialidad=create_form.especialidad.data,
-            email=create_form.email.data
-        )
-        db.session.add(alum)
-        db.session.commit()
-        return redirect(url_for('maestros.listamaestros'))
-    return render_template("maestros/Maestros_agregar.html", form=create_form)
+    
+    if request.method == 'POST':
+        create_form.descripcion.data = "Sin descripción" 
+        create_form.idmaestro.data = 0 
+        
+        if create_form.validate():
+            maestro_new = Maestros(
+                nombre=create_form.nombre.data,
+                apellidos=create_form.apellidos.data,
+                especialidad=create_form.especialidad.data,
+                email=create_form.email.data
+            )
+            db.session.add(maestro_new)
+            db.session.commit()
+            return redirect(url_for('maestros.listamaestros'))        
+    return render_template("maestros/maestros_agregar.html", form=create_form)
 
 @maestros.route("/maestros/detalles", methods=['GET', 'POST'])
 def maestrosdetalles():
@@ -41,11 +46,11 @@ def maestrosdetalles():
         apellidos = maestro1.apellidos
         especialidad = maestro1.especialidad
         email = maestro1.email
-    return render_template('maestros/Maestros_detalles.html', id=id, nombre=nombre, apellidos=apellidos, especialidad=especialidad, email=email)
+    return render_template('maestros/maestros_detalles.html', id=id, nombre=nombre, apellidos=apellidos, especialidad=especialidad, email=email)
 
 @maestros.route("/maestros/modificar", methods=['GET', 'POST'])
 def maestrosmodificar():
-    create_form = forms.UserForm() 
+    create_form = forms.UserForm(request.form) 
     
     if request.method == 'GET':
         matricula = request.args.get('matricula')
@@ -56,19 +61,23 @@ def maestrosmodificar():
             create_form.apellidos.data = maestro1.apellidos
             create_form.especialidad.data = maestro1.especialidad
             create_form.email.data = maestro1.email
-        
-    if create_form.validate_on_submit():
-        matricula = create_form.matricula.data
-        maes = db.session.query(Maestros).filter(Maestros.matricula == matricula).first()
-        if maes:
-            maes.nombre = create_form.nombre.data
-            maes.apellidos = create_form.apellidos.data
-            maes.especialidad = create_form.especialidad.data
-            maes.email = create_form.email.data
-            db.session.commit()
-        return redirect(url_for('maestros.listamaestros'))
-        
-    return render_template("maestros/Maestros_modificar.html", form=create_form)
+            
+    if request.method == 'POST':
+        create_form.descripcion.data = "Sin descripción"
+        create_form.idmaestro.data = 0
+
+        if create_form.validate():
+            matricula = create_form.matricula.data
+            maes = db.session.query(Maestros).filter(Maestros.matricula == matricula).first()
+            
+            if maes:
+                maes.nombre = create_form.nombre.data
+                maes.apellidos = create_form.apellidos.data
+                maes.especialidad = create_form.especialidad.data
+                maes.email = create_form.email.data
+                db.session.commit()
+                return redirect(url_for('maestros.listamaestros'))
+    return render_template("maestros/maestros_modificar.html", form=create_form)
 
 @maestros.route("/maestros/eliminar", methods=['GET', 'POST'])
 def maestroseliminar():
@@ -91,4 +100,4 @@ def maestroseliminar():
             db.session.commit()
         return redirect(url_for('maestros.listamaestros'))
         
-    return render_template("maestros/Maestros_eliminar.html", form=create_form)
+    return render_template("maestros/maestros_eliminar.html", form=create_form)

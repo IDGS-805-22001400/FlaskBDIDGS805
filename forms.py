@@ -18,3 +18,7 @@ class UserForm(FlaskForm):
     especialidad = StringField('Especialidad', [
         validators.DataRequired(message='La especialidad es requerida')
     ])
+    descripcion = StringField('Descripcion', [
+        validators.DataRequired(message='La descripción es requerido')
+    ])
+    idmaestro = IntegerField('ID') 

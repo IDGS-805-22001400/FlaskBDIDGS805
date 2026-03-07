@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+
+{% block container %}
+  <div class="group py-12 flex justify-center overflow-x-auto sm:rounded-lg">
+    <div class="relative bg-white max-w-sm w-full p-8 border border-gray-100 rounded-3xl shadow-xl">
+      
+      <div class="flex flex-col items-center">
+        <img class="rounded-full shadow-md border-4 border-blue-50 mb-6" 
+             src="{{ url_for('static', filename='img/usuario.png') }}" 
+             alt="User image" 
+             style="width: 100px; height: 100px; object-fit: cover;" />
+        
+        <h5 class="text-2xl font-bold text-gray-800 text-center">{{ nombre }} {{ apellidos }}</h5>
+        <p class="text-gray-500 mb-4">{{ email }}</p>
+        
+        <div class="w-full space-y-2 mb-6">
+            <div class="flex justify-between text-sm bg-gray-50 p-2 rounded-lg">
+                <span class="text-gray-400 font-semibold uppercase">Teléfono:</span>
+                <span class="text-gray-700 font-bold">{{ telefono }}</span>
+            </div>
+        </div>
+
+        <div class="w-full mb-8">
+            <h3 class="text-sm font-bold text-indigo-600 uppercase tracking-wider mb-3">Cursos Inscritos</h3>
+            <div class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                {% for curso in cursos %}
+                <div class="p-3 bg-indigo-50 border border-indigo-100 rounded-xl flex items-center">
+                    <div class="w-2 h-2 bg-indigo-400 rounded-full mr-3"></div>
+                    <span class="text-gray-700 text-sm font-medium">{{ curso.nombre }}</span>
+                </div>
+                {% else %}
+                <p class="text-gray-400 text-sm italic text-center">Sin cursos registrados</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="w-full">
+          <a href="{{ url_for('alumnos.index') }}" class="flex items-center justify-center w-full px-6 py-4 text-sm font-bold text-white bg-blue-600 rounded-2xl shadow-lg hover:bg-blue-700 hover:-translate-y-1 transition-all">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+            </svg>Regresar
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+{% block container %}
+  <div class="p-8 max-w-7xl mx-auto mt-10">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
+      <div>
+        <h2 class="text-3xl font-extrabold text-gray-800 tracking-tight">Listado de Alumnos</h2>
+      </div>
+
+      <a href="{{ url_for('alumnos.agregar') }}" class="inline-flex items-center justify-center px-6 py-3 text-sm font-bold text-white bg-blue-600 rounded-xl shadow-lg shadow-blue-200 hover:bg-blue-700 hover:-translate-y-0.5 transition-all duration-200">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+        </svg>Añadir Nuevo Alumno
+      </a>
+    </div>
+
+    <div class="bg-white shadow-2xl shadow-gray-200/50 rounded-2xl border border-gray-100 overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm text-left text-gray-600">
+          <thead class="text-xs text-gray-500 uppercase bg-gray-50 border-b border-gray-100">
+            <tr>
+              <th class="px-8 py-5 font-bold">ID</th>
+              <th class="px-8 py-5 font-bold">Nombre</th>
+              <th class="px-8 py-5 font-bold">Apellidos</th>
+              <th class="px-8 py-5 font-bold">Email</th>
+              <th class="px-8 py-5 font-bold">Telefono</th>
+              <th class="px-8 py-5 font-bold text-center">Registro</th>
+              <th class="px-8 py-5 font-bold text-center">Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-50">
+            {% for alum in alumno %}
+              <tr class="group hover:bg-blue-50/40 transition-colors">
+                <td class="px-8 py-6 font-bold text-indigo-600 text-base">#{{ alum.id }}</td>
+                <td class="px-8 py-6 font-bold text-gray-900 text-base">{{ alum.nombre }}</td>
+                <td class="px-8 py-6 text-gray-700 text-base">{{ alum.apellidos }}</td>
+                <td class="px-8 py-6">
+                  <span class="px-3 py-1 bg-blue-50 text-blue-600 rounded-lg font-medium text-xs">{{ alum.email }}</span>
+                </td>
+                <td class="px-8 py-6 font-bold text-gray-900 text-base">{{ alum.telefono }}</td>
+                <td class="px-8 py-6 text-center text-gray-400 font-medium">{{ alum.created_date.strftime('%d/%m/%Y') }}</td>
+                <td class="px-8 py-6 text-center">
+                  <a href="{{ url_for('alumnos.modificar', id=alum.id) }}" class="inline-flex items-center px-4 py-2 text-sm font-bold text-indigo-600 bg-indigo-50 rounded-xl hover:bg-indigo-600 hover:text-white transition-all shadow-sm">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                    </svg>Editar
+                  </a>
+                  <a href="{{ url_for('alumnos.detalles', id=alum.id) }}" class="inline-flex items-center px-4 py-2 text-sm font-bold text-indigo-600 bg-indigo-50 rounded-xl hover:bg-indigo-600 hover:text-white transition-all shadow-sm">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                    </svg>Detalles
+                  </a>
+                  <a href="{{ url_for('alumnos.eliminar', id=alum.id) }}" class="inline-flex items-center px-4 py-2 text-sm font-bold text-indigo-600 bg-indigo-50 rounded-xl hover:bg-indigo-600 hover:text-white transition-all shadow-sm">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                    </svg>Eliminar
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% endblock %}

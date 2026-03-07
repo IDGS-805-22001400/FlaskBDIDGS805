@@ -1,0 +1,47 @@
+{% extends 'layout.html' %}
+{% block container %}
+  <div class="max-w-4xl mx-auto py-10">
+    <div class="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 mb-8">
+      <h2 class="text-3xl font-bold text-gray-800">{{ curso.nombre }}</h2>
+      <p class="text-gray-600 mt-2">{{ curso.descripcion }}</p>
+      <div class="mt-4 inline-block bg-blue-50 text-blue-700 px-4 py-1 rounded-full text-sm font-semibold" style="background-color: #eff6ff; color: #1d4ed8; padding: 0.25rem 1rem; border-radius: 9999px;">Impartido por: {{ curso.maestro.nombre }} {{ curso.maestro.apellidos }}</div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      <div class="p-4 bg-gray-50 border-b flex justify-between items-center" style="background-color: #f9fafb; border-bottom: 1px solid #e5e7eb;">
+        <h3 class="font-bold text-gray-700">Alumnos Inscritos ({{ curso.alumnos|length }})</h3>
+      </div>
+      <table class="w-full text-sm text-left">
+        <thead class="bg-gray-100 text-gray-600 uppercase text-xs" style="background-color: #f3f4f6;">
+          <tr>
+            <th class="px-6 py-3">Matrícula</th>
+            <th class="px-6 py-3">Nombre</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for alumno in curso.alumnos %}
+            <tr class="border-b" style="border-bottom: 1px solid #f3f4f6;">
+              <td class="px-6 py-4 font-bold text-indigo-600">#{{ alumno.id }}</td>
+              <td class="px-6 py-4 text-gray-800">{{ alumno.nombre }} {{ alumno.apellidos }}</td>
+            </tr>
+          {% else %}
+            <tr>
+              <td colspan="2" class="px-6 py-8 text-center text-gray-400">Sin alumnos inscritos</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mt-8 p-6 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200" style="background-color: #f9fafb; border: 2px dashed #e5e7eb; border-radius: 0.75rem;">
+        <form action="{{ url_for('cursos.agregar_alumno_rapido', curso_id=curso.id) }}" method="POST" class="flex flex-col gap-4">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+            <a href="{{ url_for('cursos.index') }}" 
+               style="display: block; text-align: center; color: #6b7280; text-decoration: none; font-size: 0.9rem; padding: 0.5rem;"
+               class="hover:text-gray-800">
+                Volver
+            </a>
+        </form>
+    </div>
+{% endblock %}

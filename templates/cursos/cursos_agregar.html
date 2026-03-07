@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block container %}
+<div class="max-w-md mx-auto py-12" style="margin-top: 50px;">
+    <form method="POST" class="bg-white p-8 rounded-xl shadow-2xl border border-gray-100" style="border-radius: 1.5rem; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+        
+        <h3 class="text-2xl font-bold mb-6 text-gray-800" style="color: #1f2937; margin-bottom: 1.5rem;">Crear Nuevo Curso</h3>
+        
+        <div class="mb-4">
+            <label class="block text-sm font-bold text-gray-700" style="display: block; margin-bottom: 0.5rem; color: #374151;">Nombre del Curso</label>
+            <input type="text" name="nombre" required 
+                style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem;"
+                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-bold text-gray-700" style="display: block; margin-bottom: 0.5rem; color: #374151;">Descripción</label>
+            <textarea name="descripcion" rows="3" 
+                style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem;"
+                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+        </div>
+
+        <div class="mb-6">
+            <label class="block text-sm font-bold text-gray-700" style="display: block; margin-bottom: 0.5rem; color: #374151;">Asignar Maestro</label>
+            <select name="maestro_id" required 
+                style="width: 100%; padding: 0.75rem; border: 1px solid #d1d5db; border-radius: 0.5rem; background-color: white;"
+                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                <option value="" disabled selected>Selecciona un maestro...</option>
+                {% for m in maestros %}
+                <option value="{{ m.matricula }}">{{ m.nombre }} {{ m.apellidos }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <button type="submit" 
+            style="background-color: #4f46e5 !important; color: white !important; width: 100%; padding: 1rem; border-radius: 0.75rem; border: none; font-weight: bold; cursor: pointer; display: block;"
+            class="w-full bg-indigo-600 text-white py-3 rounded-lg font-bold hover:bg-indigo-700 transition-colors">
+            Guardar Curso
+        </button>
+        
+        <a href="{{ url_for('cursos.index') }}" style="display: block; text-align: center; margin-top: 1rem; color: #6b7280; text-decoration: none; font-size: 0.875rem;">
+            Cancelar y volver
+        </a>
+    </form>
+</div>
+{% endblock %}
